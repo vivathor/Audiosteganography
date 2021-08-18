@@ -1,0 +1,32 @@
+{% extends "theme.html" %}
+{% block body %}
+<div class="container">
+    <div class="jumbotron mt-2">
+        <h1 class="display-3">Secret data </h1>
+        <p class="lead"></p>
+        <hr class="my-2">
+        <p></p>
+        <p class="lead">
+            Extract the secret data
+        </p>
+    </div>
+<div class="row">    
+        <div class="col-xs-12 col-md-6 offset-3 col-sm-8">  
+            <!-- image-preview-filename input [CUT FROM HERE]-->
+            <form method="POST" class="input-group image-preview" action="/decrypt" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="audio">Audio File</label>
+                  <input type="file" class="form-control-file" name="file" id="audio" placeholder="file name" aria-describedby="audio">
+                  <small id="audio" class="form-text text-muted">Upload the file</small>
+                </div>
+                <div class="form-group " style="display:block">
+                  <br>  <button type="" class="btn btn-primary btn-block">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+
+
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "theme.html" %}
+{% block body %}
+
+<div class="container" id="wrapper" >
+    <div class="jumbotron mt-2">
+        <h1 class="display-3">Text hiding </h1>
+        <p class="lead"></p>
+        <hr class="my-2">
+        <p></p>
+        <p class="lead">
+            In this we are hide secret messages in audio file using audio steganography
+        </p>
+    </div>
+    <div class="row">    
+        <div class="col-xs-12 col-md-6 offset-3 col-sm-8">  
+            <!-- image-preview-filename input [CUT FROM HERE]-->
+            
+            <div class="centerload">
+                <div id="loader" class="text-center mx-auto"></div>
+            </div>
+            
+            <div id="success" role="alert" style="display:none"></div>
+            <div id="error" role="alert" style="display:none"></div>
+            <form method="POST"  id="form" class="input-group image-preview" enctype="multipart/form-data" action="/encrypt">
+                <div class="form-group">
+                    <label for="audio">Audio File</label>
+                    <input type="file" class="form-control-file" name="file" id="audio" placeholder="Select a file" aria-describedby="fileHelpId">
+                    <small id="fileHelpId" class="form-text text-muted">Please browse and select an audio file of wav type</small>
+                </div>
+                <div class="form-group">
+                    <label for="msg">Secret Msg</label>
+                    <textarea class="form-control" name="message" id="msg" rows="5" cols="60" placeholder="write here"></textarea>
+                </div>
+                <div class="form-group " style="display:block">
+                    <button  class="btn btn-primary btn-block">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+{% block css %}
+<style>
+    .centerload{
+        position: relative;
+        left:50%;
+        width: 28px;
+        transform: translateX(-50%);
+    }
+
+</style>
+{% endblock %}
+{% block js %}
+<script type=text/javascript>
+    
+    
+    $('#form').submit(function(event){    
+        //on change event  
+        event.stopPropagation();
+        event.preventDefault();
+        
+        $("#loader").load("/loader");    
+        formdata = new FormData();
+        file =$('#audio')[0].files[0]
+        message =$('#msg').val()
+        console.log(file)
+        formdata.append("file", file);
+        formdata.append("message", message);
+        
+        jQuery.ajax({
+            url:"/encrypt",
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function(data, textStatus, jqXHR){
+                if(typeof data.error === 'undefined'){
+                    console.log('Success: ' + data);
+                    $('#wrapper').html(data);
+                }
+                else{
+                    // Handle errors here
+                    console.log('ERRORS: ' + data.error);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                // Handle errors here
+                console.log('ERRORS: ' + textStatus);
+                
+            },
+            complete:function(e) {
+                
+            }
+        });
+        
+    });
+    
+</script>
+
+{% endblock %}
